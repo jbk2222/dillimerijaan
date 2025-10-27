@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Delhi Events Hub</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+  header, footer { background-color: #333; color: white; padding: 1em; text-align: center; }
+  nav a { color: white; margin: 0 1em; text-decoration: none; }
+  .container { padding: 1em; max-width: 900px; margin: auto; }
+  .search-bar { margin-bottom: 1em; }
+  .categories button { margin: 0.2em; padding: 0.5em 1em; cursor: pointer; }
+  .event-card { border: 1px solid #ddd; padding: 1em; margin: 0.5em 0; border-radius: 5px; }
+  .event-category { font-weight: bold; color: #555; }
+  .free { color: green; font-weight: bold; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Delhi Events Hub</h1>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Categories</a>
+    <a href="#">Submit Event</a>
+    <a href="#">About</a>
+  </nav>
+</header>
+<div class="container">
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search events..." onkeyup="filterEvents()"/>
+  </div>
+  <div class="categories">
+    <button onclick="filterByCategory('All')">All</button>
+    <button onclick="filterByCategory('Music')">Music</button>
+    <button onclick="filterByCategory('Art')">Art</button>
+    <button onclick="filterByCategory('Festival')">Festival</button>
+    <button onclick="filterByCategory('Sports')">Sports</button>
+    <button onclick="filterByCategory('Education')">Education</button>
+    <button onclick="filterByCategory('Family')">Family</button>
+    <button onclick="filterByCategory('Free')">Free Events</button>
+  </div>
+  <div id="eventsList">
+    <!-- Event cards will be shown here -->
+  </div>
+</div>
+<footer>
+  <p>Contact us: delhieventshub@example.com | Follow us on social media</p>
+</footer>
+
+<script>
+const events = [
+  { title: "Free Art Exhibition", category: "Art", date: "2025-11-10", description: "An open free exhibition showcasing local artists.", free: true },
+  { title: "Live Music Concert", category: "Music", date: "2025-11-15", description: "Enjoy live performances by popular bands.", free: false },
+  { title: "Family Fun Day", category: "Family", date: "2025-11-20", description: "Games and activities for the whole family.", free: true },
+  { title: "Educational Workshop", category: "Education", date: "2025-11-25", description: "Free workshop on digital skills.", free: true }
+];
+
+function displayEvents(filteredEvents) {
+  const eventsList = document.getElementById('eventsList');
+  eventsList.innerHTML = '';
+  filteredEvents.forEach(event => {
+    const freeLabel = event.free ? '<span class="free">Free</span>' : 'Paid';
+    const eventCard = `
+      <div class="event-card">
+        <h3>${event.title} (${event.date})</h3>
+        <p>${event.description}</p>
+        <p class="event-category">Category: ${event.category} | ${freeLabel}</p>
+      </div>`;
+    eventsList.innerHTML += eventCard;
+  });
+}
+
+function filterByCategory(category) {
+  if (category === 'All') {
+    displayEvents(events);
+  } else if (category === 'Free') {
+    displayEvents(events.filter(e => e.free));
+  } else {
+    displayEvents(events.filter(e => e.category === category));
+  }
+}
+
+function filterEvents() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = events.filter(e => e.title.toLowerCase().includes(query) || e.description.toLowerCase().includes(query));
+  displayEvents(filtered);
+}
+
+window.onload = () => {
+  displayEvents(events);
+};
+</script>
+</body>
+</html>
